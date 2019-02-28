@@ -17,7 +17,7 @@ public class DomTariffsParserTest {
     }
 
     @Test(expectedExceptions = WrongDataException.class)
-    public void parseShouldThrowWrongDataExceptionWhenWrongXmlPathSupplied(String source) throws WrongDataException {
+    public void parseShouldThrowWrongDataExceptionWhenWrongXmlPathSupplied() throws WrongDataException {
         parser.parse(WRONG_PATH);
     }
 }

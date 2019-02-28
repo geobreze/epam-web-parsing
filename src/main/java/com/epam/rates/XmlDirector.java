@@ -19,10 +19,9 @@ public class XmlDirector {
         this.validator = validator;
     }
 
-    public Tariffs process(String source, String parserType) {
+    public Tariffs process(String source, ParserType type) {
         Tariffs tariffs = new Tariffs();
         try {
-            ParserType type = ParserType.valueOf(parserType);
             TariffsParser parser = factory.getParser(type);
             if (validator.validate(source)) {
                 tariffs = parser.parse(source);

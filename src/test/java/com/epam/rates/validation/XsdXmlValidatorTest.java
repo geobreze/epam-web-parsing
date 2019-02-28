@@ -2,6 +2,7 @@ package com.epam.rates.validation;
 
 import com.epam.rates.data.TariffsXmlDataProvider;
 import com.epam.rates.exception.WrongDataException;
+import com.epam.rates.model.Tariffs;
 import org.junit.Assert;
 import org.testng.annotations.Test;
 
@@ -12,7 +13,7 @@ public class XsdXmlValidatorTest {
     private final XmlValidator validator = new XsdXmlValidator(SCHEMA_PATH);
 
     @Test(dataProvider = "parsedDataProvider", dataProviderClass = TariffsXmlDataProvider.class)
-    public void validateShouldReturnTrueWhenCorrectXmlSupplied(String source) throws WrongDataException {
+    public void validateShouldReturnTrueWhenCorrectXmlSupplied(String source, Tariffs expected) throws WrongDataException {
         boolean result = validator.validate(source);
         Assert.assertTrue(result);
     }

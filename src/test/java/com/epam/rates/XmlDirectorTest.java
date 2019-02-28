@@ -40,7 +40,7 @@ public class XmlDirectorTest {
 
     @Test
     public void processShouldParseWhenXmlIsValid() throws WrongDataException {
-        Tariffs result = director.process(CORRECT_XML_FILE, TYPE.toString());
+        Tariffs result = director.process(CORRECT_XML_FILE, TYPE);
 
         Assert.assertEquals(CORRECT_TARIFFS, result);
         verify(VALIDATOR).validate(CORRECT_XML_FILE);
@@ -51,18 +51,9 @@ public class XmlDirectorTest {
     }
 
     @Test
-    public void processShouldReturnEmptyListWhenTypeIsInvalid() {
-        String wrongType = "WRONG";
-        Tariffs expected = new Tariffs();
-        Tariffs result = director.process(CORRECT_XML_FILE, wrongType);
-        Assert.assertEquals(expected, result);
-        verifyNoMoreInteractions(VALIDATOR, FACTORY, PARSER);
-    }
-
-    @Test
     public void processShouldReturnEmptyListWhenFileIsInvalid() throws WrongDataException {
         Tariffs expected = new Tariffs();
-        Tariffs result = director.process(WRONG_FILE, TYPE.toString());
+        Tariffs result = director.process(WRONG_FILE, TYPE);
         Assert.assertEquals(expected, result);
         verify(FACTORY).getParser(TYPE);
         verify(VALIDATOR).validate(WRONG_FILE);
