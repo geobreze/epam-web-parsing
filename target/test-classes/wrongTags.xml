@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rates:tariffs
+        xmlns:rates="http://epam.com/rates"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="schema.xsd">
+    <rates:tariff name="Easy to say">
+        <rates:operator-name>MTS</rates:operator-name>
+        <rates:payroll>1004.6</rates:payroll>
+    </rates:tariff>
+    <rates:tariff name="Kind">
+        <rates:operator-name>VELCOM</rates:operator-name>
+        <rates:payroll>553.1</rates:payroll>
+    </rates:tariff>
+    <rates:preferential-tariff name="Unlim">
+        <rates:operator-name>LIFE</rates:operator-name>
+        <rates:payroll>100.5</rates:payroll>
+        <rates:preferential>DISABLED</rates:preferential>
+    </rates:preferential-tariff>
+    <rates:preferential-tariff name="Cheaper unlim">
+        <rates:incorrect>VELCOM</rates:incorrect>
+        <rates:payroll>64.42</rates:payroll>
+        <rates:preferential>ORPHAN</rates:preferential>
+    </rates:preferential-tariff>
+</rates:tariffs>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rates:tariffs
+        xmlns:rates="http://epam.com/rates"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="schema.xsd">
+    <rates:tariff name="1024">
+        <rates:operator-name>LIFE</rates:operator-name>
+        <rates:payroll>1024.0</rates:payroll>
+    </rates:tariff>
+    <rates:tariff name="Lemon">
+        <rates:operator-name>VELCOM</rates:operator-name>
+        <rates:payroll>335.3</rates:payroll>
+    </rates:tariff>
+</rates:tariffs>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:rates="http://epam.com/rates"
+           targetNamespace="http://epam.com/rates">
+    <!-- base elements define -->
+    <xs:element name="operator-name">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:enumeration value="MTS"/>
+                <xs:enumeration value="VELCOM"/>
+                <xs:enumeration value="LIFE"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <xs:element name="payroll">
+        <xs:simpleType>
+            <xs:restriction base="xs:decimal">
+                <xs:minExclusive value="0"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <xs:element name="preferential">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:enumeration value="DISABLED"/>
+                <xs:enumeration value="ORPHAN"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+
+    <!-- complex types define -->
+    <xs:complexType name="tariff-type">
+        <xs:sequence>
+            <xs:element ref="rates:operator-name"/>
+            <xs:element ref="rates:payroll"/>
+        </xs:sequence>
+        <xs:attribute name="name" type="xs:string" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="preferential-tariff-type">
+        <xs:complexContent>
+            <xs:extension base="rates:tariff-type">
+                <xs:sequence>
+                    <xs:element ref="rates:preferential"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <!-- complex elements define -->
+    <xs:element name="tariff" type="rates:tariff-type"/>
+    <xs:element name="preferential-tariff" type="rates:preferential-tariff-type"/>
+
+    <!-- base element define -->
+    <xs:element name="tariffs">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="rates:tariff" maxOccurs="unbounded"/>
+                <xs:element ref="rates:preferential-tariff" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
