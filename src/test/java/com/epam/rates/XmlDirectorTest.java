@@ -6,9 +6,9 @@ import com.epam.rates.parser.TariffsParser;
 import com.epam.rates.parser.factory.ParserType;
 import com.epam.rates.parser.factory.TariffsParserFactory;
 import com.epam.rates.validation.XmlValidator;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
