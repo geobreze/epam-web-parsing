@@ -40,8 +40,8 @@ public class PreferentialTariff extends Tariff {
         if (!super.equals(o)) {
             return false;
         }
-        PreferentialTariff that = (PreferentialTariff) o;
-        return preferential.equals(preferential);
+        PreferentialTariff other = (PreferentialTariff) o;
+        return preferential.equals(other.preferential);
     }
 
     @Override

@@ -28,8 +28,6 @@ public class XmlDirector {
             }
         } catch (WrongDataException e) {
             LOGGER.error("Invalid file supplied", e);
-        } catch (IllegalArgumentException e) {
-            LOGGER.error("Invalid parser type", e);
         }
         return tariffs;
     }
