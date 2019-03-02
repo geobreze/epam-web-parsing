@@ -35,7 +35,7 @@ public class XsdXmlValidator implements XmlValidator {
             LOGGER.info("Supplied source or schema file is invalid", e);
             result = false;
         } catch (IOException e) {
-            throw new WrongDataException("Invalid files applied", e);
+            throw new WrongDataException("Invalid files supplied", e);
         }
         return result;
     }

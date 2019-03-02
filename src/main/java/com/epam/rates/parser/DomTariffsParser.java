@@ -22,7 +22,7 @@ public class DomTariffsParser implements TariffsParser {
     private static final String PREFERENTIAL_TARIFF = "preferential-tariff";
 
     public Tariffs parse(String source) throws WrongDataException {
-        List<Tariff> tariffsList = new ArrayList<>();
+        List<Tariff> tariffsList;
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         try {
@@ -30,13 +30,7 @@ public class DomTariffsParser implements TariffsParser {
             Document document = builder.parse(source);
             Element root = document.getDocumentElement();
             NodeList nodes = root.getChildNodes();
-            for (int i = 0; i < nodes.getLength(); ++i) {
-                Node tariffNode = nodes.item(i);
-                if (tariffNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Tariff tariff = parseTariff(nodes.item(i));
-                    tariffsList.add(tariff);
-                }
-            }
+            tariffsList = parseTariffs(nodes);
         } catch (ParserConfigurationException e) {
             throw new WrongDataException("Wrong parser configuration", e);
         } catch (SAXException e) {
@@ -47,18 +41,44 @@ public class DomTariffsParser implements TariffsParser {
         return new Tariffs(tariffsList);
     }
 
-    private Tariff parseTariff(Node node) throws WrongDataException {
+    private List<Tariff> parseTariffs(NodeList nodes) throws WrongDataException {
+        List<Tariff> tariffsList = new ArrayList<>();
+        for (int i = 0; i < nodes.getLength(); ++i) {
+            Node tariffNode = nodes.item(i);
+            if (tariffNode.getNodeType() == Node.ELEMENT_NODE) {
+                Tariff tariff = buildTariff(tariffNode);
+                tariffsList.add(tariff);
+            }
+        }
+        return tariffsList;
+    }
+
+    private Tariff buildTariff(Node tariffNode) throws WrongDataException {
         Tariff tariff;
-        switch (node.getLocalName()) {
+        switch (tariffNode.getLocalName()) {
             case TARIFF:
-                tariff = new Tariff();
+                tariff = buildTariff(tariffNode, new Tariff());
                 break;
             case PREFERENTIAL_TARIFF:
-                tariff = new PreferentialTariff();
+                tariff = buildPreferentialTariff(tariffNode, new PreferentialTariff());
                 break;
             default:
-                throw new WrongDataException("Invalid tag names");
+                throw new WrongDataException("Invalid tag");
         }
+        return tariff;
+    }
+
+    private Tariff buildPreferentialTariff(Node node, Tariff tariff) {
+        buildTariff(node, tariff);
+
+        Element element = (Element) node;
+        String preferentialString = getChildNodeValue("preferential", element);
+        Preferential preferential = Preferential.valueOf(preferentialString);
+        ((PreferentialTariff) tariff).setPreferential(preferential);
+        return tariff;
+    }
+
+    private Tariff buildTariff(Node node, Tariff tariff){
         Element element = (Element) node;
         String name = element.getAttribute("name");
         tariff.setName(name);
@@ -68,11 +88,6 @@ public class DomTariffsParser implements TariffsParser {
         String payrollString = getChildNodeValue("payroll", element);
         BigDecimal payroll = new BigDecimal(payrollString);
         tariff.setPayroll(payroll);
-        if (PREFERENTIAL_TARIFF.equals(node.getLocalName())) {
-            String preferentialString = getChildNodeValue("preferential", element);
-            Preferential preferential = Preferential.valueOf(preferentialString);
-            ((PreferentialTariff) tariff).setPreferential(preferential);
-        }
         return tariff;
     }
 

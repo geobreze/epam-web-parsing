@@ -9,7 +9,7 @@ import java.util.Objects;
 import java.util.StringJoiner;
 
 @XmlType(namespace = "http://epam.com/rates")
-@XmlRootElement(namespace = "http://epam.com/rates")
+@XmlRootElement(name = "tariff", namespace = "http://epam.com/rates")
 public class Tariff {
     private String name;
     private Operator operatorName;
@@ -36,17 +36,17 @@ public class Tariff {
         this.payroll = payroll;
     }
 
-    @XmlAttribute
+    @XmlAttribute(name = "name", required = true)
     public String getName() {
         return name;
     }
 
-    @XmlElement(name = "operator-name", namespace = "http://epam.com/rates")
+    @XmlElement(name = "operator-name", namespace = "http://epam.com/rates", required = true)
     public Operator getOperatorName() {
         return operatorName;
     }
 
-    @XmlElement(namespace = "http://epam.com/rates")
+    @XmlElement(name = "payroll", namespace = "http://epam.com/rates", required = true)
     public BigDecimal getPayroll() {
         return payroll;
     }

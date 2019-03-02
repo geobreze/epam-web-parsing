@@ -3,7 +3,6 @@ package com.epam.rates;
 import com.epam.rates.exception.WrongDataException;
 import com.epam.rates.model.Tariffs;
 import com.epam.rates.parser.TariffsParser;
-import com.epam.rates.parser.factory.ParserType;
 import com.epam.rates.parser.factory.TariffsParserFactory;
 import com.epam.rates.validation.XmlValidator;
 import org.apache.logging.log4j.LogManager;
@@ -19,10 +18,10 @@ public class XmlDirector {
         this.validator = validator;
     }
 
-    public Tariffs process(String source, ParserType type) {
+    public Tariffs process(String source) {
         Tariffs tariffs = new Tariffs();
         try {
-            TariffsParser parser = factory.getParser(type);
+            TariffsParser parser = factory.get();
             if (validator.validate(source)) {
                 tariffs = parser.parse(source);
             }

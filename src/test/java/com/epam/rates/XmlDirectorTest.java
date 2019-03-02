@@ -3,7 +3,6 @@ package com.epam.rates;
 import com.epam.rates.exception.WrongDataException;
 import com.epam.rates.model.*;
 import com.epam.rates.parser.TariffsParser;
-import com.epam.rates.parser.factory.ParserType;
 import com.epam.rates.parser.factory.TariffsParserFactory;
 import com.epam.rates.validation.XmlValidator;
 import org.testng.Assert;
@@ -20,7 +19,6 @@ public class XmlDirectorTest {
     private static final TariffsParserFactory FACTORY = mock(TariffsParserFactory.class);
     private static final TariffsParser PARSER = mock(TariffsParser.class);
     private static final XmlValidator VALIDATOR = mock(XmlValidator.class);
-    private static final ParserType TYPE = ParserType.DOM;
     private static final String WRONG_FILE = "WRONG";
     private static final Tariffs CORRECT_TARIFFS = new Tariffs(Arrays.asList(
             new Tariff("Easy to say", Operator.MTS, BigDecimal.valueOf(1004.6)),
@@ -34,17 +32,17 @@ public class XmlDirectorTest {
     public static void initMocks() throws WrongDataException {
         when(VALIDATOR.validate(WRONG_FILE)).thenThrow(WrongDataException.class);
         when(VALIDATOR.validate(CORRECT_XML_FILE)).thenReturn(true);
-        when(FACTORY.getParser(TYPE)).thenReturn(PARSER);
+        when(FACTORY.get()).thenReturn(PARSER);
         when(PARSER.parse(CORRECT_XML_FILE)).thenReturn(CORRECT_TARIFFS);
     }
 
     @Test
     public void processShouldParseWhenXmlIsValid() throws WrongDataException {
-        Tariffs result = director.process(CORRECT_XML_FILE, TYPE);
+        Tariffs result = director.process(CORRECT_XML_FILE);
 
         Assert.assertEquals(CORRECT_TARIFFS, result);
         verify(VALIDATOR).validate(CORRECT_XML_FILE);
-        verify(FACTORY).getParser(TYPE);
+        verify(FACTORY).get();
         verify(PARSER).parse(CORRECT_XML_FILE);
         verifyNoMoreInteractions(VALIDATOR, FACTORY, PARSER);
         clearInvocations(VALIDATOR, FACTORY, PARSER);
@@ -53,9 +51,9 @@ public class XmlDirectorTest {
     @Test
     public void processShouldReturnEmptyListWhenFileIsInvalid() throws WrongDataException {
         Tariffs expected = new Tariffs();
-        Tariffs result = director.process(WRONG_FILE, TYPE);
+        Tariffs result = director.process(WRONG_FILE);
         Assert.assertEquals(expected, result);
-        verify(FACTORY).getParser(TYPE);
+        verify(FACTORY).get();
         verify(VALIDATOR).validate(WRONG_FILE);
         verifyNoMoreInteractions(FACTORY, VALIDATOR, PARSER);
         clearInvocations(FACTORY, VALIDATOR, PARSER);

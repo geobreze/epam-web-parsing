@@ -20,7 +20,7 @@ public class PreferentialTariff extends Tariff {
         this.preferential = preferential;
     }
 
-    @XmlElement(namespace = "http://epam.com/rates")
+    @XmlElement(name = "preferential", namespace = "http://epam.com/rates", required = true)
     public Preferential getPreferential() {
         return preferential;
     }
